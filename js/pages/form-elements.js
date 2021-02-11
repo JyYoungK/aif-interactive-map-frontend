@@ -23,8 +23,6 @@ $(document).ready(function() {
         'default': 'now'
     });
 
-
-
     document.getElementById("firebase-submit-button").onclick = function () { //Entering new Data
 
         // Quick setup
@@ -42,6 +40,12 @@ $(document).ready(function() {
         if (name == "") {
             alert("Please enter your name!");
         }
+        else if (category == "- Resource Categories -"){
+            alert("Please select Resource Categories!");
+        }
+        else if (selectedCountry == "- Countries and Regions -"){
+            alert("Please select Countries and Regions!");
+        }
         else {
             //Check if user exists first
             var userExists = database.ref("users/" + name);
@@ -55,36 +59,35 @@ $(document).ready(function() {
                         .then(function(categoryinDB){
                             if (categoryinDB.exists()){ //if username exists only create new category, update
                                 usersRef.child(name).child("Category").child(category).push({
-                                    Country: selectedCountry,
-                                    Tag: tag,
-                                    UserComment: input,
+                                    selectedCountry: selectedCountry,
+                                    tag: tag,
+                                    input: input,
+                                    category: category,
                                 });
+                                window.location.href="sdg/climate.html";
                             }
                             else{
                                 firebase.database().ref('users/' + name + '/Category/' + category).push({
-                                    Country: selectedCountry,
-                                    Tag: tag,
-                                    UserComment: input,
-                                }) 
+                                    selectedCountry: selectedCountry,
+                                    tag: tag,
+                                    input: input,
+                                    category: category,
+                                });
+                                window.location.href="sdg/climate.html";
                             }
                         });
                     }
                     else{//if not, create new
                         usersRef.child(name).child("Category").child(category).push({
-                            Country: selectedCountry,
-                            Tag: tag,
-                            UserComment: input,
+                            selectedCountry: selectedCountry,
+                            tag: tag,
+                            input: input,
+                            category: category,
                         });  
+                        window.location.href="sdg/climate.html";
                     }
                 });
-                // //Test data retrieval
-                // console.log("name: ", name)
-                // console.log("username: ", username)
-                // console.log("category: ", category)
-                // console.log("country: ", selectedCountry)
-                // console.log("tag: ", tag)
-                // console.log("input: ", input)
         }
-    }
 
+    }
 });
